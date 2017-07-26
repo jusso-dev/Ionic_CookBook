@@ -1,0 +1,87 @@
+<ion-header>
+
+  <ion-navbar color="dark">
+    <ion-title>Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="background-color:darkblue">
+
+  <div class="wrapper">
+    <img [src]="user.photoUrl" class="img-square">
+  </div>
+
+  <h2 style="text-align:center">
+  <em>{{user.firstName}}</em>
+  <br />
+  <button (click)="Logout()" ion-button color="dark" floating>Logout</button>
+  </h2>
+
+  <ion-input placeholder="What's cooking out there?" [(ngModel)]="posts.post"></ion-input>
+  <button ion-button color="dark" (click)="postStatus(posts)">Post</button>
+  <ion-card>
+
+  <br />
+
+<div *ngFor="let i of items | async">
+<ion-item>
+    <ion-avatar item-start>
+      <img [src]="user.photoUrl" >
+    </ion-avatar>
+    <h2>{{i.CreatedBy}}</h2>
+  </ion-item>
+
+    <ion-card-content>
+    <h2>{{i.Post}}</h2>
+    <ion-col center text-left>
+      <ion-note color="dark">
+        {{i.CreatedOn | date:'medium'}}
+      </ion-note>
+    </ion-col>
+  </ion-card-content>
+  <ion-item [hidden]="!cameraImg">
+    <img src="{{cameraImg}}">
+  </ion-item>
+  <ion-row>
+    <ion-col>
+      <button (click)="LikeStatus(i.$key)" ion-button icon-left clear small>
+        <ion-icon name="thumbs-up"></ion-icon>
+        <div>{{i?.Likes}} Likes</div>                                                                                                                                                                                                                                                                                      </button>
+    </ion-col>
+    <ion-col>
+      <button (click)="AddComment(i.$key, i.CreatedBy)" ion-button icon-left clear small>
+        <ion-icon name="text"></ion-icon>
+        <div>Add Comment</div>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button (click)="removeStatus(i.$key)" ion-button icon-left clear small>
+        <ion-icon name="trash"></ion-icon>
+        <div>Delete</div>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button (click)="UploadImage(i.$key)" ion-button icon-left clear small>
+        <ion-icon name="camera"></ion-icon>
+        <div>Take Photo</div>
+      </button>
+      <button (click)="ShowComments(i.$key, i.CreatedBy)" ion-button icon-left clear small>
+        <ion-icon name="text"></ion-icon>
+        <div>Show Comments</div>
+      </button>
+    </ion-col>
+  </ion-row>
+  <div *ngFor="let c of comments | async">
+  <ion-item [hidden]="!i.Comments">
+    <p>
+      <strong>{{c?.CreatedBy}}</strong>
+       <br />
+       {{c?.Comment?.Comment}}
+       <br />
+       {{c?.CommentCreated | date:'medium'}}
+    </p>
+  </ion-item>
+  </div>
+  <hr />
+</div>
